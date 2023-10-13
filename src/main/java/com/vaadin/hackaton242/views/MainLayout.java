@@ -13,8 +13,9 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 import com.vaadin.hackaton242.views.about.AboutView;
 import com.vaadin.hackaton242.views.helloworld.HelloWorldView;
+import com.vaadin.hackaton242.views.helloworld.HelloWorldView2;
+import com.vaadin.hackaton242.views.helloworld.HelloWorldView3;
 import com.vaadin.hackaton242.views.login.LoginView;
-import com.vaadin.hackaton242.views.visualviewbuilder.VisualViewBuilderView;
 import org.vaadin.lineawesome.LineAwesomeIcon;
 
 /**
@@ -52,8 +53,11 @@ public class MainLayout extends AppLayout {
 
     private SideNav createNavigation() {
         SideNav nav = new SideNav();
-
-        nav.addItem(new SideNavItem("Hello World", HelloWorldView.class, LineAwesomeIcon.GLOBE_SOLID.create()));
+        var helloWorldItem = new SideNavItem("Hello World", HelloWorldView.class, LineAwesomeIcon.GLOBE_SOLID.create());
+        helloWorldItem.addItem(new SideNavItem("Hello world 2", HelloWorldView2.class, LineAwesomeIcon.GLOBE_AFRICA_SOLID.create()));
+        helloWorldItem.addItem(new SideNavItem("Hello world 3", HelloWorldView3.class, LineAwesomeIcon.GLOBE_EUROPE_SOLID.create()));
+        helloWorldItem.setExpanded(true);
+        nav.addItem(helloWorldItem);
         nav.addItem(new SideNavItem("About", AboutView.class, LineAwesomeIcon.FILE.create()));
         nav.addItem(new SideNavItem("Login", LoginView.class, LineAwesomeIcon.USER.create()));
 

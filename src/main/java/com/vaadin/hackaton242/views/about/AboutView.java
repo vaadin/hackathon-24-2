@@ -6,11 +6,13 @@ import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.theme.lumo.LumoUtility.Margin;
 import com.vaadin.hackaton242.views.MainLayout;
 
 @PageTitle("About")
 @Route(value = "about", layout = MainLayout.class)
+@RouteAlias(value = "alternative-about", layout = MainLayout.class)
 public class AboutView extends VerticalLayout {
 
     public AboutView() {
