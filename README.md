@@ -1,3 +1,11 @@
+# Project by Kriss Seglins and Herberts Markuns
+## Things done
+- Added "one time password" field for Login Overlay with simple validation
+- Added sub-items in SideNav
+- Tested Sidenav "active" state when using RouteAlias and root path, which historically didn't work properly.
+
+
+
 # Hackaton 24.2 HM
 
 This project can be used as a starting point to create your own Vaadin application with Spring Boot.
