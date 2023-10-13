@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Bean;
 
 import com.example.application.data.UserRepository;
 import com.vaadin.flow.component.page.AppShellConfigurator;
+import com.vaadin.flow.server.PWA;
 import com.vaadin.flow.server.VaadinService;
 import com.vaadin.flow.server.VaadinServiceInitListener;
 import com.vaadin.flow.server.VaadinSession;
@@ -30,6 +31,7 @@ import jakarta.servlet.http.HttpSessionEvent;
  */
 @SpringBootApplication
 @Theme(value = "my-app")
+@PWA(name = "My WebPush app", shortName = "MWPA")
 public class Application implements AppShellConfigurator {
 
     public static void main(String[] args) {

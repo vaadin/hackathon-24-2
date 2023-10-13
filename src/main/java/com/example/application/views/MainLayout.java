@@ -2,17 +2,23 @@ package com.example.application.views;
 
 import java.io.ByteArrayInputStream;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Optional;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.vaadin.lineawesome.LineAwesomeIcon;
 
 import com.example.application.data.User;
 import com.example.application.security.AuthenticatedUser;
+import com.example.application.services.PushService;
 import com.example.application.views.helloworld.HelloWorldView;
 import com.vaadin.collaborationengine.CollaborationEngine;
 import com.vaadin.collaborationengine.CollaborationList;
+import com.vaadin.collaborationengine.PresenceManager;
 import com.vaadin.collaborationengine.SystemUserInfo;
 import com.vaadin.collaborationengine.TopicConnection;
+import com.vaadin.collaborationengine.UserInfo;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.avatar.Avatar;
@@ -38,6 +44,7 @@ import com.vaadin.flow.theme.lumo.LumoUtility;
  * The main view is a top-level placeholder for other views.
  */
 public class MainLayout extends AppLayout {
+    public static final PushService pushService = new PushService();
 
     private H2 viewTitle;
 
@@ -55,8 +62,9 @@ public class MainLayout extends AppLayout {
 
         String username = authenticatedUser.get().get().getUsername();
 
+        UserInfo localUser = authenticatedUser.getAsUserInfo().get();
         CollaborationEngine.getInstance().openTopicConnection(this, "messages",
-                authenticatedUser.getAsUserInfo().get(), connection -> {
+                localUser, connection -> {
                     CollaborationList messages = connection
                             .getNamedList(username);
                     messages.subscribe(event -> {
@@ -68,6 +76,9 @@ public class MainLayout extends AppLayout {
                     });
                     return null;
                 });
+
+        new PresenceManager(this, localUser, "presence").markAsPresent(true);
+        ;
     }
 
     private void addHeaderContent() {
@@ -156,6 +167,8 @@ public class MainLayout extends AppLayout {
     }
 
     private static TopicConnection connection;
+    private static Set<String> onlineUsers = Collections
+            .newSetFromMap(new ConcurrentHashMap<>());
 
     static {
         CollaborationEngine ce = CollaborationEngine.getInstance();
@@ -164,11 +177,26 @@ public class MainLayout extends AppLayout {
                     MainLayout.connection = connection;
                     return null;
                 });
+
+        PresenceManager presenceManager = new PresenceManager(
+                ce.getSystemContext(), SystemUserInfo.getInstance(), "presence",
+                CollaborationEngine.getInstance());
+        presenceManager.setPresenceHandler(context -> {
+            onlineUsers.add(context.getUser().getId());
+            return () -> onlineUsers.remove(context.getUser().getId());
+        });
     }
 
     public static void send(String message, Collection<User> recipients) {
         for (User user : recipients) {
-            connection.getNamedList(user.getUsername()).insertLast(message);
+            String username = user.getUsername();
+            connection.getNamedList(username).insertLast(message);
+            if (!onlineUsers.contains(username)) {
+                System.out.println("Pusing since " + username + " is offline");
+                pushService.push(username, message);
+            } else {
+                System.out.println("No push since " + username + " is online");
+            }
         }
     }
 
