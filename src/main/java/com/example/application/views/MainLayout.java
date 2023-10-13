@@ -1,6 +1,7 @@
 package com.example.application.views;
 
 import java.io.ByteArrayInputStream;
+import java.util.Collection;
 import java.util.Optional;
 
 import org.vaadin.lineawesome.LineAwesomeIcon;
@@ -8,6 +9,10 @@ import org.vaadin.lineawesome.LineAwesomeIcon;
 import com.example.application.data.User;
 import com.example.application.security.AuthenticatedUser;
 import com.example.application.views.helloworld.HelloWorldView;
+import com.vaadin.collaborationengine.CollaborationEngine;
+import com.vaadin.collaborationengine.CollaborationList;
+import com.vaadin.collaborationengine.SystemUserInfo;
+import com.vaadin.collaborationengine.TopicConnection;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.avatar.Avatar;
@@ -20,6 +25,7 @@ import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Header;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.menubar.MenuBar;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.Scroller;
 import com.vaadin.flow.component.sidenav.SideNav;
 import com.vaadin.flow.component.sidenav.SideNavItem;
@@ -46,6 +52,22 @@ public class MainLayout extends AppLayout {
         setPrimarySection(Section.DRAWER);
         addDrawerContent();
         addHeaderContent();
+
+        String username = authenticatedUser.get().get().getUsername();
+
+        CollaborationEngine.getInstance().openTopicConnection(this, "messages",
+                authenticatedUser.getAsUserInfo().get(), connection -> {
+                    CollaborationList messages = connection
+                            .getNamedList(username);
+                    messages.subscribe(event -> {
+                        String message = event.getValue(String.class);
+                        if (message != null) {
+                            Notification.show(message);
+                            messages.remove(event.getKey());
+                        }
+                    });
+                    return null;
+                });
     }
 
     private void addHeaderContent() {
@@ -132,4 +154,22 @@ public class MainLayout extends AppLayout {
                 .getAnnotation(PageTitle.class);
         return title == null ? "" : title.value();
     }
+
+    private static TopicConnection connection;
+
+    static {
+        CollaborationEngine ce = CollaborationEngine.getInstance();
+        ce.openTopicConnection(ce.getSystemContext(), "messages",
+                SystemUserInfo.getInstance(), connection -> {
+                    MainLayout.connection = connection;
+                    return null;
+                });
+    }
+
+    public static void send(String message, Collection<User> recipients) {
+        for (User user : recipients) {
+            connection.getNamedList(user.getUsername()).insertLast(message);
+        }
+    }
+
 }
