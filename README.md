@@ -5,6 +5,9 @@
 - Tested Sidenav "active" state when using RouteAlias and root path, which historically didn't work properly.
 - Tested a way to make SideNavItem not collapsible, created feature request https://github.com/vaadin/flow-components/issues/5578
 
+![img_2.png](img_2.png)
+![img.png](img.png)
+
 
 
 You can also import the project to your IDE of choice as you would with any
