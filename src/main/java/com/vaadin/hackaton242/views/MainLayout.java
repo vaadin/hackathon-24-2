@@ -13,6 +13,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 import com.vaadin.hackaton242.views.about.AboutView;
 import com.vaadin.hackaton242.views.helloworld.HelloWorldView;
+import com.vaadin.hackaton242.views.login.LoginView;
 import com.vaadin.hackaton242.views.visualviewbuilder.VisualViewBuilderView;
 import org.vaadin.lineawesome.LineAwesomeIcon;
 
@@ -54,8 +55,8 @@ public class MainLayout extends AppLayout {
 
         nav.addItem(new SideNavItem("Hello World", HelloWorldView.class, LineAwesomeIcon.GLOBE_SOLID.create()));
         nav.addItem(new SideNavItem("About", AboutView.class, LineAwesomeIcon.FILE.create()));
-        nav.addItem(new SideNavItem("Visual View Builder", VisualViewBuilderView.class,
-                LineAwesomeIcon.PENCIL_RULER_SOLID.create()));
+        nav.addItem(new SideNavItem("Login", LoginView.class, LineAwesomeIcon.USER.create()));
+
 
         return nav;
     }
