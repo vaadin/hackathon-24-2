@@ -53,7 +53,9 @@ public class MainLayout extends AppLayout {
 
     private SideNav createNavigation() {
         SideNav nav = new SideNav();
+        nav.addClassNames("no-collapse");
         var helloWorldItem = new SideNavItem("Hello World", HelloWorldView.class, LineAwesomeIcon.GLOBE_SOLID.create());
+        helloWorldItem.addClassNames("no-collapse");
         helloWorldItem.addItem(new SideNavItem("Hello world 2", HelloWorldView2.class, LineAwesomeIcon.GLOBE_AFRICA_SOLID.create()));
         helloWorldItem.addItem(new SideNavItem("Hello world 3", HelloWorldView3.class, LineAwesomeIcon.GLOBE_EUROPE_SOLID.create()));
         helloWorldItem.setExpanded(true);
