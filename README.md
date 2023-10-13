@@ -1,12 +1,10 @@
 # hackathon-24-2
 
-## links
-- Hackathon Results [Repository](https://github.com/vaadin/hackathon-24-2)
-- Slack [Channel](https://join.slack.com/share/enQtNTk4NTM5Njg5MDI0NS00MWE2YjMzZDI4Yzc4NmE0YjhiMzU1ZTc3ODdlMzJmNWZmNzI1OGJmYWMzMjM1MmQ5OWY0ZWU1N2YyNzczNzIw)
-## Rules
-- Use Platform [24.2.0.rc2](https://github.com/vaadin/platform/releases/tag/24.2.0.rc2), Hilla [2.3.0.beta1](https://github.com/vaadin/hilla/releases/tag/2.3.0.beta1)
-- Work on an app, a fix, a migration, experiment new features, improve docs, update addon, open issues, etc.
-- Push a branch to the REPO (Before Monday 16th at noon)
-- If there is no code add a README or screenshots
-- Everyone will get a present.
-- Gift for 3 winners 
+I've updated my customer application to Vaadin 24.2.0.rc2 and try the Appsec-kit.
+
+I opened some tickets:
+- Unable to use the View in an app secured by Spring: https://github.com/vaadin/appsec-kit/issues/105
+- Make the AppSecKit view more responsive: https://github.com/vaadin/appsec-kit/issues/107
+- Can't run the Application.java directly: https://github.com/vaadin/appsec-kit/issues/108
+
+Nothing to show.
